@@ -8,6 +8,7 @@
 import ArgumentParser
 import Foundation
 import PathKit
+import Stencil
 
 public struct ProjectCommand: ParsableCommand {
     @Option(help: "Specify name of the project")
@@ -54,8 +55,10 @@ public struct ProjectCommand: ParsableCommand {
         let projectGenerator = try ProjectGenerator(outputPath: outputPath,
                                                     projectInformation: information)
 
-        try projectGenerator.generate(for: .all)
-        try projectGenerator.generate(for: .allWith(customs: []))
-        try projectGenerator.generate(for: .custom(templates: []))
+        try projectGenerator.generate(for: .all, loader: DictionaryLoader(templates: Templates.shared.templates))
+        try projectGenerator.generate(for: .allWith(customs: []), 
+                                      loader: DictionaryLoader(templates: Templates.shared.templates))
+        try projectGenerator.generate(for: .custom(templates: []),
+                                      loader: DictionaryLoader(templates: Templates.shared.templates))
     }
 }

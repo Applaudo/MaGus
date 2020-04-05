@@ -7,10 +7,11 @@
 
 import Foundation
 import PathKit
+import Stencil
 
 /// Represents the project information and it's used to feed information
 /// for templates
-public struct ProjectInformation {
+public struct ProjectInformation: Decodable {
     public let name: String
     public let platform: Platform
     public let bundleId: String
@@ -56,7 +57,7 @@ public struct ProjectGenerator {
         - Throws:
         - Any error related to templates or folder generation.
      */
-    public func generate(for option: TemplateOption) throws {
+    public func generate(for option: TemplateOption, loader: Loader) throws {
         var templates: [TemplateInformation]
         switch option {
         case .all:
@@ -67,7 +68,7 @@ public struct ProjectGenerator {
             templates = customs
         }
 
-        try templateGenerator.generate(templates)
+        try templateGenerator.generate(templates, loader: loader)
     }
 
     private func allTemplates() -> [TemplateInformation] {

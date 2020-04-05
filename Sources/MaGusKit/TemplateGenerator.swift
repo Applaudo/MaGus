@@ -8,6 +8,7 @@
 import Stencil
 import Foundation
 import PathKit
+import AnyCodable
 
 /// Alias used to dictionary type that applies values to a template
 public typealias TemplateContext = [String: Any]
@@ -40,8 +41,6 @@ public protocol TemplateInformation {
 public struct TemplateGenerator {
     /// Root path where templates will be written to.
     private let outputPath: Path
-    /// This is where all of the templates are extracted and provided to stencil
-    private let template: Templates
 
     /**
      Initializer for Template Generator.
@@ -51,10 +50,8 @@ public struct TemplateGenerator {
      - template: Type where all templates are registered to,
      By Default accepts a global template store.
      */
-    public init(outputPath: Path,
-                template: Templates = .shared) {
+    public init(outputPath: Path) {
         self.outputPath = outputPath
-        self.template = template
     }
 
     /**
@@ -67,9 +64,9 @@ public struct TemplateGenerator {
      - Throws: Throws an error if folder iss not able to be created
      Template doesn't exist or there was a problem writing the template itself
      */
-    public func generate(_ templates: [TemplateInformation]) throws {
+    public func generate(_ templates: [TemplateInformation],
+                         loader: Loader) throws {
         for template in templates {
-            let loader = DictionaryLoader(templates: self.template.templates)
             let environment = Environment(loader: loader)
 
             let renderedTemplate = try environment.renderTemplate(name: template.templateName,
@@ -90,8 +87,8 @@ public struct TemplateGenerator {
      - Throws: Throws an error if template doesn't exist or there was problem generating
      the template
      */
-    public func generate(information: TemplateInformation) throws -> String {
-        let loader = DictionaryLoader(templates: self.template.templates)
+    public func generate(information: TemplateInformation,
+                         loader: Loader) throws -> String {
         let environment = Environment(loader: loader)
         
         let renderedTemplate = try environment.renderTemplate(name: information.templateName, context: information.context)
