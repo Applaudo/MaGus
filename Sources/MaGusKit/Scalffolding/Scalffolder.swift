@@ -23,9 +23,21 @@ public struct CustomTemplate: TemplateInformation, Decodable {
         case templatePath
     }
 
+    init(context: TemplateContext, 
+        templateName: String, 
+        outputFilePath: Path, 
+        fileName: String, 
+        templatePath: Path) {
+        self.context = context
+        self.templateName = templateName
+        self.outputFilePath = outputFilePath
+        self.fileName = fileName
+        self.templatePath = templatePath
+    }
+
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        context = try values.decode([String: AnyDecodable].self, forKey: .context)
+        context = try values.decode([String: AnyDecodable].self, forKey: .context) ?? [:]
         templateName = try values.decode(String.self, forKey: .templateName)
         let outputFile = try values.decode(String.self, forKey: .outputFilePath)
         outputFilePath = Path(outputFile)
@@ -36,7 +48,6 @@ public struct CustomTemplate: TemplateInformation, Decodable {
 }
 
 public struct ProjectConfiguration: Decodable {
-
     public let projectInformation: ProjectInformation
     public let templates: [CustomTemplate]
 }
@@ -58,7 +69,3 @@ public struct Scalffolder {
                                       loader: FileSystemLoader(paths: paths))
     }
 }
-
-
-
-

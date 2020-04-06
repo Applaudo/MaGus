@@ -11,7 +11,7 @@ import Stencil
 
 /// Represents the project information and it's used to feed information
 /// for templates
-public struct ProjectInformation: Decodable {
+public struct ProjectInformation: Decodable, Equatable {
     public let name: String
     public let platform: Platform
     public let bundleId: String
@@ -19,6 +19,22 @@ public struct ProjectInformation: Decodable {
     public let username: String
     public let teamId: String
     public let matchRepo: String
+
+    init(name: String,
+         platform: Platform, 
+         bundleId: String, 
+         deploymentTarget: Double, 
+         username: String, 
+         teamId: String, 
+         matchRepo: String) {
+        self.name = name
+        self.platform = platform
+        self.bundleId = bundleId
+        self.deploymentTarget = deploymentTarget
+        self.username = username
+        self.teamId = teamId
+        self.matchRepo = matchRepo
+    }
 }
 
 /// Provides options you could use when you want to generate
