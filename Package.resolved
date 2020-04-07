@@ -57,11 +57,11 @@
       },
       {
         "package": "TOMLDecoder",
-        "repositoryURL": "https://github.com/dduan/TOMLDecoder",
+        "repositoryURL": "https://github.com/guseducampos/TOMLDecoder.git",
         "state": {
-          "branch": null,
-          "revision": "e591bee4e5d624b99519d563ba87cc762ab7a308",
-          "version": "0.1.5"
+          "branch": "prevent-crash",
+          "revision": "855391bab3cd74c9b0347f5e901851fead0327f1",
+          "version": null
         }
       },
       {

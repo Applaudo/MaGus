@@ -37,7 +37,7 @@ public struct CustomTemplate: TemplateInformation, Decodable {
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        context = try values.decode([String: AnyDecodable].self, forKey: .context) ?? [:]
+        context = try values.decodeIfPresent([String: AnyDecodable].self, forKey: .context) ?? [:]
         templateName = try values.decode(String.self, forKey: .templateName)
         let outputFile = try values.decode(String.self, forKey: .outputFilePath)
         outputFilePath = Path(outputFile)
@@ -57,15 +57,24 @@ public struct Scalffolder {
 
     private let projectGenerator: ProjectGenerator
 
-    init(outputPath: Path, projectInformation: ProjectConfiguration) throws {
+    private let outputPath: Path
+
+    init(outputPath: Path, 
+        projectInformation: ProjectConfiguration) throws {
+        self.outputPath = outputPath
         self.projectConfiguration = projectInformation
         self.projectGenerator = try ProjectGenerator(outputPath: outputPath, 
                                                  projectInformation: projectConfiguration.projectInformation)
     }
 
     public func generate() throws {
-        let paths = projectConfiguration.templates.map { $0.templatePath }
-        try projectGenerator.generate(for: .allWith(customs: projectConfiguration.templates),
+        let paths = projectConfiguration.templates
+                    .map { Path.current + $0.templatePath }
+                    .filter { $0.exists }
+
+        try projectGenerator.generate(for: .all, 
+                                      loader: DictionaryLoader(templates: Templates.shared.templates))
+        try projectGenerator.generate(for: .custom(templates: projectConfiguration.templates),
                                       loader: FileSystemLoader(paths: paths))
     }
 }
