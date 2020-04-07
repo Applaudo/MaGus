@@ -52,7 +52,7 @@ public struct ProjectConfiguration: Decodable {
     public let templates: [CustomTemplate]
 }
 
-public struct Scalffolder {
+public struct Scaffolder {
     private let projectConfiguration: ProjectConfiguration
 
     private let projectGenerator: ProjectGenerator

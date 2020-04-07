@@ -12,7 +12,7 @@ import Stencil
 import TOMLDecoder
 import AnyCodable
 
-final class ScalffoldingTest: XCTestCase {
+final class ScaffoldingTest: XCTestCase {
 
     let path = Path.current + Path("outputScalffold")
 
@@ -125,7 +125,7 @@ final class ScalffoldingTest: XCTestCase {
 
         // When
         let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: tomlFile)
-        let scalffolder = try Scalffolder(outputPath: path,
+        let scalffolder = try Scaffolder(outputPath: path,
                                          projectInformation: projectConfiguration)
 
         try scalffolder.generate()
