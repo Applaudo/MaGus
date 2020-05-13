@@ -47,11 +47,13 @@ public struct CustomTemplate: TemplateInformation, Decodable {
     }
 }
 
+/// Represents the information extracted from configuration template file
 public struct ProjectConfiguration: Decodable {
     public let projectInformation: ProjectInformation
     public let templates: [CustomTemplate]
 }
 
+/// Generates Templates from configuration files 
 public struct Scaffolder {
     private let projectConfiguration: ProjectConfiguration
 

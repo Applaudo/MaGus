@@ -42,13 +42,12 @@ final class ScaffoldingTest: XCTestCase {
             [templates.context]
              projectId = "ApplaudoTest"
         """
-        let projectInformation = ProjectInformation(name: "MyApp", 
+        let projectInformation = try ProjectInformation(name: "MyApp", 
                                                     platform: .ios, 
                                                     bundleId: "com.mycompany.myapp", 
                                                     deploymentTarget: 13.0,
                                                     username: "test", 
-                                                    teamId: "test",
-                                                    matchRepo: "test")
+                                                    teamId: "test")
         // When
         let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: tomlFile)
 
@@ -81,13 +80,12 @@ final class ScaffoldingTest: XCTestCase {
             fileName = "JenkinsFile"
             templatePath = "./MyTemplates"
         """
-        let projectInformation = ProjectInformation(name: "MyApp", 
+        let projectInformation = try ProjectInformation(name: "MyApp", 
                                                     platform: .ios, 
                                                     bundleId: "com.mycompany.myapp", 
                                                     deploymentTarget: 13.0,
                                                     username: "test", 
-                                                    teamId: "test",
-                                                    matchRepo: "test")
+                                                    teamId: "test")
         // When
         let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: tomlFile)
 
