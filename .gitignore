@@ -8,6 +8,8 @@ DerivedData/
 .DS_Store
 .swiftpm/
 output/
+templates/
+.vscode/
 
 ## Various settings
 *.pbxuser

@@ -7,17 +7,50 @@
 
 import Foundation
 import PathKit
+import Stencil
 
 /// Represents the project information and it's used to feed information
 /// for templates
-public struct ProjectInformation {
+public struct ProjectInformation: Decodable, Equatable {
+    enum ValidationError: Error {
+       case property(_ property: String)
+    }
+
     public let name: String
     public let platform: Platform
     public let bundleId: String
     public let deploymentTarget: Double
     public let username: String
     public let teamId: String
-    public let matchRepo: String
+
+    init(name: String,
+         platform: Platform, 
+         bundleId: String, 
+         deploymentTarget: Double, 
+         username: String, 
+         teamId: String) throws {
+        self.name = name
+        self.platform = platform
+        self.bundleId = bundleId
+        self.deploymentTarget = deploymentTarget
+        self.username = username
+        self.teamId = teamId
+
+        try validate()
+    }
+
+    // validate strings fields
+    private func validate() throws {
+        let properties = Mirror(reflecting: self).children
+
+        for property in properties  {
+           if let value = property.value as? String {    
+                if value.isEmpty {
+                    throw ValidationError.property("Property \(property.label ?? "") has incorrect value or is empty")
+                 }
+            } 
+        }
+    }
 }
 
 /// Provides options you could use when you want to generate
@@ -56,7 +89,7 @@ public struct ProjectGenerator {
         - Throws:
         - Any error related to templates or folder generation.
      */
-    public func generate(for option: TemplateOption) throws {
+    public func generate(for option: TemplateOption, loader: Loader) throws {
         var templates: [TemplateInformation]
         switch option {
         case .all:
@@ -67,7 +100,7 @@ public struct ProjectGenerator {
             templates = customs
         }
 
-        try templateGenerator.generate(templates)
+        try templateGenerator.generate(templates, loader: loader)
     }
 
     private func allTemplates() -> [TemplateInformation] {
@@ -81,15 +114,11 @@ public struct ProjectGenerator {
                                         username: information.username,
                                         teamId: information.teamId)
 
-        let matchFile = MatchFileTemplate(bundleId: information.bundleId,
-                                          username: information.username,
-                                          matchRepo: information.matchRepo)
-
         let gemFile = GemFileTemplate()
 
         let unitTest = UnitTestTemplate(testPath: outputPath + "\(information.name)Tests")
 
-        return [xcodeGenTemplate, fastFile, matchFile, gemFile, unitTest]
+        return [xcodeGenTemplate, fastFile, gemFile, unitTest]
     }
 
     /// Method that generates all base folders if they don't exist

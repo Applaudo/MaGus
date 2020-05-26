@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Platform: String {
+public enum Platform: String, Decodable {
     case ios = "ios"
     case macos = "macos"
 

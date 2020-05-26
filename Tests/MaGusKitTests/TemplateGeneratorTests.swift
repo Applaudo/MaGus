@@ -8,8 +8,12 @@
 @testable import MaGusKit
 import XCTest
 import PathKit
+import Stencil
 
 final class TemplateGeneratorTests: XCTestCase {
+
+    let dictionaryLoader = DictionaryLoader(templates: Templates.shared.templates)
+
     func testGenerateJson() throws {
         // Given
         let information = ProjectTemplateInformation(name: "TestName",
@@ -19,7 +23,7 @@ final class TemplateGeneratorTests: XCTestCase {
         let generator = TemplateGenerator(outputPath: .current)
         
         // When
-        let renderedTemplate = try generator.generate(information: information)
+        let renderedTemplate = try generator.generate(information: information, loader: dictionaryLoader)
         
         // Then
         XCTAssertEqual(Mock.generatedJSON, renderedTemplate)
@@ -34,7 +38,7 @@ final class TemplateGeneratorTests: XCTestCase {
         let generator = TemplateGenerator(outputPath: .current)
 
         // When
-        let renderedTemplate = try generator.generate(information: information)
+        let renderedTemplate = try generator.generate(information: information, loader: dictionaryLoader)
 
         // Then
         XCTAssertEqual(Mock.fastFileGenerated, renderedTemplate)
@@ -48,7 +52,7 @@ final class TemplateGeneratorTests: XCTestCase {
         let generator = TemplateGenerator(outputPath: .current)
 
         // When
-        let renderedTemplate = try generator.generate(information: information)
+        let renderedTemplate = try generator.generate(information: information, loader: dictionaryLoader)
 
         // Then
         XCTAssertEqual(Mock.matchFileGenerated, renderedTemplate)
