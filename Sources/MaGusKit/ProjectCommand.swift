@@ -70,9 +70,9 @@ public struct ProjectCommand: ParsableCommand {
     }
 
     private func generateProjectWithTemplates(outputPath: Path, specPath: Path) throws {
-        let spec = try specPath.read()
+        let parser = try ConfigurationFileParser(path: specPath)
 
-        let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: spec)
+        let projectConfiguration = try parser.decode()
         let scaffolder = try Scaffolder(outputPath: outputPath, 
                                         projectInformation: projectConfiguration)
 
