@@ -19,7 +19,7 @@ final class PartialUpdate<T> {
     }
 }
 
-enum Fields: CaseIterable {
+enum Fields: String, CaseIterable {
     case name
     case platform
     case bundleId
@@ -83,8 +83,23 @@ final class CommandQueue {
     private var partial: PartialUpdate<ProjectInformation> = .init()
     
     func process() throws -> ProjectInformation {
-        processQueue(partial: partial)
+       try checkInEnvironment()
        return try ProjectInformation(from: partial)
+    }
+
+    private func checkInEnvironment() throws {
+        guard let field = fields.first else {
+            return
+        }
+        if let value = ProcessInfo.processInfo.environment[field.rawValue] {
+            fields.removeFirst()
+            try field.update(partial: partial, value: value)
+            if !fields.isEmpty {
+                try checkInEnvironment()
+            }
+        } else {
+            processQueue(partial: partial)
+        }
     }
 
     private func processQueue(partial: PartialUpdate<ProjectInformation>)  {

@@ -49,7 +49,6 @@ public struct CustomTemplate: TemplateInformation, Decodable {
 
 /// Represents the information extracted from configuration template file
 public struct ProjectConfiguration: Decodable {
-    public let projectInformation: ProjectInformation
     public let templates: [CustomTemplate]
 }
 
@@ -62,11 +61,12 @@ public struct Scaffolder {
     private let outputPath: Path
 
     init(outputPath: Path, 
-        projectInformation: ProjectConfiguration) throws {
+        projectConfiguration: ProjectConfiguration,
+        projectInformation: ProjectInformation) throws {
         self.outputPath = outputPath
-        self.projectConfiguration = projectInformation
+        self.projectConfiguration = projectConfiguration
         self.projectGenerator = try ProjectGenerator(outputPath: outputPath, 
-                                                 projectInformation: projectConfiguration.projectInformation)
+                                                 projectInformation: projectInformation)
     }
 
     public func generate() throws {
