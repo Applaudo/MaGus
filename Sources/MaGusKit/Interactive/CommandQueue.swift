@@ -104,7 +104,7 @@ final class CommandQueue {
 
     private func processQueue(partial: PartialUpdate<ProjectInformation>)  {
         let field = fields.removeFirst()
-        print(field.message)
+        print("\n" + field.message)
         let input = readLine()
         do {
             try field.update(partial: partial, value: input ?? "")
@@ -112,7 +112,7 @@ final class CommandQueue {
                 processQueue(partial: partial)
             }
         } catch {
-            print(error)
+            print(error.localizedDescription)
             fields.insert(field, at: 0)
             processQueue(partial: partial)
         }

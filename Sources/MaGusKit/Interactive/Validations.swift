@@ -1,7 +1,24 @@
-enum ValidationError: Error {
+import Foundation
+
+enum ValidationError: LocalizedError {
     case emptyValue
     case invalidDeploymentTarget
     case invalidPlatform
+
+    var errorDescription: String? {
+        switch self {
+          case .emptyValue:
+             return "Value shouldn't be empty"
+          case .invalidDeploymentTarget:
+            return "Deployment target is invalid (it should be greather than 10.0)"
+           case .invalidPlatform:
+            return "Selected platform is invalid (write ios or macos)"     
+        }
+    }
+
+    var localizedDescription: String {
+        errorDescription ?? ""
+    }
 }
 
 func checkForEmpty(_ value: String) throws {
