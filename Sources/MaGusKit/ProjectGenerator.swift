@@ -39,6 +39,15 @@ public struct ProjectInformation: Decodable, Equatable {
         try validate()
     }
 
+    init(from partial: PartialUpdate<ProjectInformation>) throws {
+        self.name = try partial.value(for: \.name)
+        self.platform = try partial.value(for: \.platform)
+        self.bundleId = try partial.value(for: \.bundleId)
+        self.deploymentTarget = try partial.value(for: \.deploymentTarget)
+        self.username = try partial.value(for: \.username)
+        self.teamId = try partial.value(for: \.teamId)
+    }
+
     // validate strings fields
     private func validate() throws {
         let properties = Mirror(reflecting: self).children

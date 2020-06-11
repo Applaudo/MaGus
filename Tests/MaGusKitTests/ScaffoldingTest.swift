@@ -24,38 +24,21 @@ final class ScaffoldingTest: XCTestCase {
     func testParseTOMLFileWithVariables() throws {
         // Given
         let tomlFile = """
-        [projectInformation]
-        name = "MyApp"
-        platform = "ios"
-        bundleId = "com.mycompany.myapp"
-        deploymentTarget = 13.0
-        username = "test"
-        teamId = "test"
-        matchRepo = "test"
-
-            [[templates]]
-            templateName = "Jenkinsfile"
-            outputFilePath = "./output/JenkinsFile"
-            fileName = "JenkinsFile"
-            templatePath = "./MyTemplates"
+        [[templates]]
+        templateName = "Jenkinsfile"
+        outputFilePath = "./output/JenkinsFile"
+        fileName = "JenkinsFile"
+        templatePath = "./MyTemplates"
 
             [templates.context]
              projectId = "ApplaudoTest"
         """
-        let projectInformation = try ProjectInformation(name: "MyApp", 
-                                                    platform: .ios, 
-                                                    bundleId: "com.mycompany.myapp", 
-                                                    deploymentTarget: 13.0,
-                                                    username: "test", 
-                                                    teamId: "test")
-        // When
         let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: tomlFile)
 
         // Then
         let template = try XCTUnwrap(projectConfiguration.templates.first)
 
         let anyDecodable = try XCTUnwrap(template.context["projectId"] as? AnyDecodable)
-        XCTAssertEqual(projectConfiguration.projectInformation, projectInformation)
         XCTAssertEqual(anyDecodable.value as? String, "ApplaudoTest")
         XCTAssertEqual(template.fileName, "JenkinsFile")
         XCTAssertEqual(template.outputFilePath, "./output/JenkinsFile")
@@ -65,34 +48,19 @@ final class ScaffoldingTest: XCTestCase {
     func testParseTOMLWhenThereAreNoContextVariables() throws {
         // Given
         let tomlFile = """
-        [projectInformation]
-        name = "MyApp"
-        platform = "ios"
-        bundleId = "com.mycompany.myapp"
-        deploymentTarget = 13.0
-        username = "test"
-        teamId = "test"
-        matchRepo = "test"
-
             [[templates]]
             templateName = "Jenkinsfile"
             outputFilePath = "./output/JenkinsFile"
             fileName = "JenkinsFile"
             templatePath = "./MyTemplates"
         """
-        let projectInformation = try ProjectInformation(name: "MyApp", 
-                                                    platform: .ios, 
-                                                    bundleId: "com.mycompany.myapp", 
-                                                    deploymentTarget: 13.0,
-                                                    username: "test", 
-                                                    teamId: "test")
+    
         // When
         let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: tomlFile)
 
         // Then
         let template = try XCTUnwrap(projectConfiguration.templates.first)
 
-        XCTAssertEqual(projectConfiguration.projectInformation, projectInformation)
         XCTAssertEqual(template.context.isEmpty, true)
         XCTAssertEqual(template.fileName, "JenkinsFile")
         XCTAssertEqual(template.outputFilePath, "./output/JenkinsFile")
@@ -102,16 +70,7 @@ final class ScaffoldingTest: XCTestCase {
      func testGenerateFilesFromConfigurationFile() throws {
            // Given
         let tomlFile = """
-        [projectInformation]
-        name = "MyApp"
-        platform = "ios"
-        bundleId = "com.mycompany.myapp"
-        deploymentTarget = 13.0
-        username = "test"
-        teamId = "test"
-        matchRepo = "test"
-
-            [[templates]]
+        [[templates]]
             templateName = "CustomTemplate.stencil"
             outputFilePath = "./"
             fileName = "MyCustomTemplate"
@@ -120,11 +79,18 @@ final class ScaffoldingTest: XCTestCase {
             [templates.context]
              text = "Hello World"
         """
+        let projectInformation = try ProjectInformation(name: "MyApp", 
+                                                        platform: .ios, 
+                                                        bundleId: "com.mycompany.myapp", 
+                                                        deploymentTarget: 13.0, 
+                                                        username: "test", 
+                                                        teamId: "test")
 
         // When
         let projectConfiguration = try TOMLDecoder().decode(ProjectConfiguration.self, from: tomlFile)
         let scalffolder = try Scaffolder(outputPath: path,
-                                         projectInformation: projectConfiguration)
+                                         projectConfiguration: projectConfiguration,
+                                         projectInformation: projectInformation)
 
         try scalffolder.generate()
 

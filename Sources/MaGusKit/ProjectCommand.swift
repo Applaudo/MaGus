@@ -36,13 +36,18 @@ public struct ProjectCommand: ParsableCommand {
     @Option(default: "", help: "Path to the Spec that you want use to generate project with custom templates")
     var spec: String
 
+    @Flag(help: "Send flag if you want to use as interactive mode")
+    var interactive: Bool
+
     public init() {}
     
     public func run() throws {
         let outputPath = Path.current + self.outputPath
 
-        if spec.isEmpty {
+        if spec.isEmpty && interactive == false {
            try  generateBasicProject()
+        } else if spec.isEmpty && interactive {
+            try generateProjectFromInteractive()
         } else {
             try generateProjectWithTemplates(outputPath: outputPath, 
                                              specPath: Path(spec))
@@ -63,18 +68,33 @@ public struct ProjectCommand: ParsableCommand {
                                              username: username,
                                              teamId: teamId)
 
-        let projectGenerator = try ProjectGenerator(outputPath: outputPath,
+        try generateBasicProject(outputPath: outputPath, information: information)
+    }
+
+    private func generateProjectFromInteractive() throws {
+        let outputPath = Path.current + self.outputPath
+        let commandQueue = CommandQueue()
+        let projectInformation = try commandQueue.process()
+
+        try generateBasicProject(outputPath: outputPath, information: projectInformation)
+    }
+
+    private func generateBasicProject(outputPath: Path, information: ProjectInformation) throws {
+         let projectGenerator = try ProjectGenerator(outputPath: outputPath,
                                                     projectInformation: information)
 
-        try projectGenerator.generate(for: .all, loader: DictionaryLoader(templates: Templates.shared.templates))
+         try projectGenerator.generate(for: .all, loader: DictionaryLoader(templates: Templates.shared.templates))
     }
 
     private func generateProjectWithTemplates(outputPath: Path, specPath: Path) throws {
+        let commandQueue = CommandQueue()
+        let projectInformation = try commandQueue.process()
         let parser = try ConfigurationFileParser(path: specPath)
 
         let projectConfiguration = try parser.decode()
         let scaffolder = try Scaffolder(outputPath: outputPath, 
-                                        projectInformation: projectConfiguration)
+                                        projectConfiguration: projectConfiguration,
+                                        projectInformation: projectInformation)
 
         try scaffolder.generate()
     }
