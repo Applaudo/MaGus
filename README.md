@@ -16,7 +16,11 @@ MaGus is a command line tool, written in Swift, that generates base files for an
 More info about generated files [Here](Documentation/TEMPLATES.md)
 
 ### Installation
-TBD
+We currently support the use of [Mint](https://github.com/yonaskolb/mint) as the distribution system.
+
+```
+$ mint install applaudo/MaGus
+```
 
 ### Usage
 MaGus offers the following options from CLI:
@@ -64,7 +68,7 @@ Add to your Package.swift
 Then in your Target reference MaGus Like:
 
 ```swift
-.target(name: "MyAwesomTool", dependencies: ["MaGusKit"]),
+.target(name: "MyAwesomeTool", dependencies: ["MaGusKit"]),
 ```
 
 MaGus offers you a basic project generation, ready to be used; but sometimes you might want to extend its functionality and add custom templates, or use it inside another tool. Fortunately, MaGus offers you a set of API that will help you to extend it..
@@ -155,6 +159,7 @@ Made with :heart: by [Applaudo Studios](https://applaudostudios.com)
 # Maintainers
  Manuel Sanchez
         - [Github](https://github.com/manasv)
+        - [Twitter](https://twitter.com/_manasv)
  
  Gustavo Campos
         - [Github](https://github.com/guseducampos)
