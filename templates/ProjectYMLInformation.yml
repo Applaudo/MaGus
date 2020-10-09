@@ -1,0 +1,7 @@
+templates:
+   - templateName: CustomTemplate.stencil
+     outputFilePath: ./output/JenkinsFile
+     fileName: MyCustomTemplate
+     templatePath: /Tests/TestTemplates
+     context:
+        text: Hello World 

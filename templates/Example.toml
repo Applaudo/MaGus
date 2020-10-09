@@ -1,0 +1,17 @@
+[projectInformation]
+name = "MyApp"
+platform = "ios"
+bundleId = "com.mycompany.myapp"
+deploymentTarget = 13.0
+username = "test"
+teamId = "test"
+matchRepo = "test"
+
+[[templates]]
+    templateName = "Jenkinsfile"
+    outputFilePath = "./output/JenkinsFile"
+    fileName = "JenkinsFile"
+    templatePath = "./MyTemplates"
+    
+    [templates.context]
+        projectId = "ApplaudoTest"
