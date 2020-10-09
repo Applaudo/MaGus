@@ -1,0 +1,9 @@
+
+    [[templates]]
+        templateName = "Jenkinsfile"
+        outputFilePath = "./output/JenkinsFile"
+        fileName = "JenkinsFile"
+        templatePath = "./MyTemplates"
+
+        [templates.context]
+            text = "ApplaudoTest"
