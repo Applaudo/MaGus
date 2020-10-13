@@ -1,5 +1,5 @@
 //
-//  ProjectCommand.swift
+//  MaGus.swift
 //  
 //
 //  Created by Manuel Sánchez on 3/2/20.
@@ -11,33 +11,33 @@ import PathKit
 import Stencil
 import TOMLDecoder
 
-public struct ProjectCommand: ParsableCommand {
-    @Option(default: "", help: "Specify name of the project")
-    var name: String
+public struct Magus: ParsableCommand {
+    @Option(help: "Specify name of the project")
+    var name: String = ""
     
-    @Option(default: "iOS", help: "Specify platform of the project")
-    var platform: String
+    @Option(help: "Specify platform of the project")
+    var platform: String = "iOS"
     
-    @Option(default: "", help: "Specify Bundle ID for the project")
-    var bundleId: String
+    @Option(help: "Specify Bundle ID for the project")
+    var bundleId: String = ""
     
-    @Option(default: 13.0, help: "Specify desired deployment target for the project")
-    var deploymentTarget: Double
+    @Option(help: "Specify desired deployment target for the project")
+    var deploymentTarget: Double = 13.0
 
-    @Option(default: "output", help: "Specify path where you want to store generated project")
-    var outputPath: String
+    @Option(help: "Specify path where you want to store generated project")
+    var outputPath: String = "output"
 
-    @Option(default: "", help: "Team Id you will use to sign in your app")
-    var teamId: String
+    @Option(help: "Team Id you will use to sign in your app")
+    var teamId: String = ""
 
-    @Option(default: "", help: "username you will use to sign in certificates and get from developer center")
-    var username: String
+    @Option(help: "username you will use to sign in certificates and get from developer center")
+    var username: String = ""
 
-    @Option(default: "", help: "Path to the Spec that you want use to generate project with custom templates")
-    var spec: String
+    @Option(help: "Path to the Spec that you want use to generate project with custom templates")
+    var spec: String = ""
 
-    @Flag(help: "Send flag if you want to use as interactive mode")
-    var interactive: Bool
+    @Flag(name: .shortAndLong, help: "Send flag if you want to use as interactive mode")
+    var interactive: Bool = false
 
     public init() {}
     

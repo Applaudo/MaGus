@@ -5,7 +5,7 @@ MaGus define a set of custom base files. Those files are for different kind of t
 
 this how all of the files are generated. Use the following parameters:
 ```
-swift run MaGus --name SuperApp --platform iOS --bundle-id com.test.app --deployment-target 13.0 --team-id test --username test@test.com
+swift run magus --name SuperApp --platform iOS --bundle-id com.test.app --deployment-target 13.0 --team-id test --username test@test.com
 ```
 
 ### Fastlane
