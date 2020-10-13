@@ -34,13 +34,13 @@ enum Fields: String, CaseIterable {
        case .platform:
            return "📖 What platform will you support? (ios/macos)"  
        case .bundleId: 
-            return "🎒 What is your bundle Id?"
+            return "🎒 What is your Bundle ID?"
        case .deploymentTarget: 
             return "🎹 What is your deployment target?"
        case .teamId: 
-            return "👨‍👩‍👧‍👦 What is your team id? (Optional leavy empty if any)"
+            return "👨‍👩‍👧‍👦 What is your team id? (Optional: leave empty if any)"
         case .username:
-            return "👔 What is your username for upload to store? (Optional leavy empty if any)"    
+            return "👔 What is your username for upload to AppStore? (Optional: leave empty if any)"
         }
     } 
 
