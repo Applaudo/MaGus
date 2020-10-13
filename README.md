@@ -26,7 +26,7 @@ $ mint install applaudo/MaGus
 MaGus offers the following options from CLI:
 
 ```
-USAGE: project-command --name <name> [--platform <platform>] --bundle-id <bundle-id> --deployment-target <deployment-target> [--output-path <output-path>] --team-id <team-id> --username <username> [--match-repo <match-repo>]
+USAGE: magus [--name <name>] [--platform <platform>] [--bundle-id <bundle-id>] [--deployment-target <deployment-target>] [--output-path <output-path>] [--team-id <team-id>] [--username <username>] [--spec <spec>] [--interactive]
 
 OPTIONS:
   --name <name>           Specify name of the project
@@ -34,21 +34,23 @@ OPTIONS:
   --bundle-id <bundle-id> Specify Bundle ID for the project
   --deployment-target <deployment-target>
                           Specify desired deployment target for the project
+                          (default: 13.0)
   --output-path <output-path>
                           Specify path where you want to store generated
                           project (default: output)
   --team-id <team-id>     Team Id you will use to sign in your app
   --username <username>   username you will use to sign in certificates and get
                           from developer center
-  --match-repo <match-repo>
-                          Repo where your certificates are stored
+  --spec <spec>           Path to the Spec that you want use to generate
+                          project with custom templates
+  -i, --interactive       Send flag if you want to use as interactive mode
   -h, --help              Show help information.
 ```
 
 If you want to generate a project, run the following command:
 
 ```
-MaGus --name SuperApp --bundle-id com.test.app --deployment-target 13.0 --team-id test --username test@test.com
+magus --name SuperApp --bundle-id com.test.app --deployment-target 13.0 --team-id test --username test@test.com
 ```
 This will generate all files and a folder named output in the current directory where the command was issued.  `output`.
 

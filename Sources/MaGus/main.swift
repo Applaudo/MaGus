@@ -1,3 +1,3 @@
 import MaGusKit
 
-ProjectCommand.main()
+Magus.main()
